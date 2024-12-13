@@ -8,4 +8,7 @@ frontend:
   host:
 
   # Optional
+  BACKGROUND_COLOR: "#A11211"
+  FONT_COLOR: "white"
+
   replicas: 2
