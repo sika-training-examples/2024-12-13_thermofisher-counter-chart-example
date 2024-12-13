@@ -1,0 +1,11 @@
+backend:
+  # Optional
+  replicas: 2
+  host: null
+
+frontend:
+  # Required
+  host:
+
+  # Optional
+  replicas: 2

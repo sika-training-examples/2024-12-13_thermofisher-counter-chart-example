@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Release.Name }}-backend
+spec:
+  selector:
+    matchLabels:
+      app: {{ .Release.Name }}-backend
+  replicas: {{ .Values.backend.replicas }}
+  template:
+    metadata:
+      labels:
+        app: {{ .Release.Name }}-backend
+    spec:
+      containers:
+        - name: main
+          image: ghcr.io/ondrejsika/counter
+          resources:
+            requests:
+              cpu: 20m
+              memory: 30Mi
+            limits:
+              cpu: 50m
+              memory: 60Mi
+          env:
+            - name: REDIS
+              value: {{ .Release.Name }}-redis
+            - name: SLOW_START
+              value: "10"
+          ports:
+            - containerPort: 80
+          startupProbe:
+            httpGet:
+              path: /readyz
+              port: 80

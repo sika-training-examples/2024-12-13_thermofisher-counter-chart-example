@@ -1,0 +1,4 @@
+Frontend: http://{{ .Values.frontend.host }}
+{{- if .Values.backend.host }}
+Backend:  http://{{ .Values.backend.host }}
+{{ end }}

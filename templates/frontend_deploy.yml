@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Release.Name }}-frontend
+spec:
+  selector:
+    matchLabels:
+      app: {{ .Release.Name }}-frontend
+  replicas: {{ .Values.frontend.replicas }}
+  template:
+    metadata:
+      labels:
+        app: {{ .Release.Name }}-frontend
+    spec:
+      initContainers:
+        - name: wait-for-counter-backend
+          image: sikalabs/slu:v0.80.0
+          command: ["sh", "-c", "slu wait-for tcp -a {{ .Release.Name }}-backend:80"]
+      containers:
+        - name: main
+          image: ghcr.io/ondrejsika/counter-frontend
+          resources:
+            requests:
+              cpu: 101m
+              memory: 100Mi
+            limits:
+              cpu: 300m
+              memory: 300Mi
+          env:
+            - name: API_ORIGIN
+              value: http://{{ .Release.Name }}-backend
+          ports:
+            - containerPort: 3000

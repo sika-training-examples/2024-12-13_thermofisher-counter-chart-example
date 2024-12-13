@@ -1,0 +1,5 @@
+apiVersion: v2
+name: counter
+description: Counter example for ThermoFisher Scientific
+type: application
+version: 2024.12.13
